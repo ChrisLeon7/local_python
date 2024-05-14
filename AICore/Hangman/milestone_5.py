@@ -1,14 +1,10 @@
 import random
 
-word_list = ["peach", "coconut", "grapefruit", "mango", "grapes"]
-
-word = random.choice(word_list)
-
 class Hangamn:
     
-    def __init__(self, word_list, num_lives=5):
+    def __init__(self, word_list, num_lives):
         self.word = random.choice(word_list)
-        self.word_guesed = ["_"] * len(word)
+        self.word_guessed = ["_"] * len(self.word)
         self.num_letters = set(self.word)
         self.num_lives = num_lives
         self.list_of_guesses = []
@@ -17,14 +13,14 @@ class Hangamn:
         guess = guess.lower()
         if guess in self.word:
             print(f"Good guess! {guess} is in the word.")
-            for letter in self.word:
+            for index, letter in enumerate(self.word):
                 if letter == guess:
-                    self.word_guessed = guess
+                    self.word_guessed[index] = guess
             self.num_letters.remove(guess)
         else:
-            num_lives -= 1
-            print(f'Sorry, {letter} is not in the word')
-            print(f'You have {num_lives} left')
+            self.num_lives -= 1
+            print(f'Sorry, {guess} is not in the word')
+            print(f'You have {self.num_lives} left')
             
 
     def ask_for_input(self):
@@ -38,20 +34,23 @@ class Hangamn:
             else:
                 print("Invalid letter. Please, enter a single alphabetical character.")
         self.check_guess(guess)
-        self.list_of_guesses.append()
+        
 
 
-def play_game(word_list):
+def play_game():
+    word_list = ["peach", "coconut", "grapefruit", "mango", "grapes"]
     num_lives = 5
-    game = Hangamn(word_list)
-    game(word_list, num_lives)
+    game = Hangamn(word_list, num_lives)
     while True:
-        if num_lives == 0:
+        if game.num_lives == 0:
             print("You have lost")
-        elif game.num_letters > 0:
+            break
+        elif len(game.num_letters) > 0:
             game.ask_for_input()
-        elif num_lives != 0 and game.num_letters <= 0:
+        elif num_lives != 0 and len(game.num_letters) <= 0:
             print("Congratulations. You won the game.")
+            break
 
-play_game(word_list)
+
+play_game()
 
